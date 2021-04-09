@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maliya/routes/route_names.dart';
+import 'package:maliya/views/about/about_page.dart';
 import 'package:maliya/views/home/home_page.dart';
 import 'package:maliya/views/login/login_page.dart';
 import 'package:maliya/routes/string_extensions.dart';
@@ -33,8 +34,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoutes(LoginPage(), settings);
     case HomeRoutes:
       return _getPageRoutes(HomePage(), settings);
-    // case AboutRoutes:
-    //   return _getPageRoutes(AboutView(), settings);
+    case AboutRoutes:
+      return _getPageRoutes(AboutPage(), settings);
     // case EpisodeRoutes:
     //   return _getPageRoutes(EpisodeView(), settings);
     // case EpisodeDetailRoutes:
