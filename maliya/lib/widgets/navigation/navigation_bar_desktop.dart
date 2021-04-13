@@ -1,26 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maliya/routes/route_names.dart';
 import 'package:maliya/widgets/navigation/navigation_item.dart';
 import 'package:maliya/widgets/navigation/navigation_menu.dart';
 
-List<Widget> navBarItems = [
-  NavigationItem(
-    title: 'Home',
-    navigationPath: HomeRoutes,
-  ),
-  NavigationItem(
-    title: 'About',
-    navigationPath: AboutRoutes,
-  ),
-  NavigationItem(
-    title: 'Contact US',
-  ),
-  NavigationItem(
-    title: 'Help',
-  ),
-];
+class NavigationBarDesktop extends StatefulWidget {
+  @override
+  _NavigationBarDesktopState createState() => _NavigationBarDesktopState();
+}
 
-class NavigationBarTablet extends StatelessWidget {
+class _NavigationBarDesktopState extends State<NavigationBarDesktop> {
+  // int _selectedIndex = 0;
+  List<bool> activeItems = [true, false, false, false];
+
+  setItemActive(int index) {
+    for (int i = 0; i < activeItems.length; i++) {
+      if (i == index)
+        activeItems[i] = true;
+      else
+        activeItems[i] = false;
+    }
+    print(activeItems);
+  }
+
+  void _onItemTapped(int index) {
+    // setState(() {
+    //   _selectedIndex = index;
+    // });
+    print(index);
+    setItemActive(index);
+  }
+
+  List<Widget> navBarItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    //   navBarItems = [
+    //     NavigationItem(
+    //       title: 'Home',
+    //       navigationPath: HomeRoutes,
+    //       index: 0,
+    //       isActive: activeItems[0],
+    //       onPressed: _onItemTapped,
+    //     ),
+    //     NavigationItem(
+    //       title: 'About',
+    //       navigationPath: AboutRoutes,
+    //       index: 1,
+    //       isActive: activeItems[1],
+    //       onPressed: _onItemTapped,
+    //     ),
+    //     NavigationItem(
+    //       title: 'Contact US',
+    //       index: 2,
+    //       isActive: activeItems[2],
+    //       onPressed: setItemActive(2),
+    //     ),
+    //     NavigationItem(
+    //       title: 'Help',
+    //       index: 3,
+    //       isActive: activeItems[3],
+    //       onPressed: setItemActive(3),
+    //     ),
+    //   ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

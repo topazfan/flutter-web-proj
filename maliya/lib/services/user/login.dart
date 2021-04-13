@@ -14,3 +14,10 @@ Future<Response> sign(String param) async {
   final response = await httpClient.client().get('/attribute/list');
   return response;
 }
+
+Future<Response> queryUserById(int id) async {
+  final httpClient = locator<HttpClient>();
+  final response =
+      await httpClient.client().get('/user/id', queryParameters: {"id": id});
+  return response;
+}

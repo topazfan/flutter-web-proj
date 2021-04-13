@@ -6,17 +6,21 @@ class NavigationMenu extends StatelessWidget {
   final bool isActive;
   final String title;
   final String navigationPath;
-  final dynamic onSelected;
+  final Function onPressed;
 
-  const NavigationMenu(
-      {this.title, this.navigationPath, this.isActive, this.onSelected});
+  const NavigationMenu({
+    this.title,
+    this.navigationPath,
+    this.isActive,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => {
         locator<NavigatorService>().navigatorTo(navigationPath),
-        onSelected(),
+        onPressed(),
       },
       child: Padding(
         padding: EdgeInsets.only(right: 45),

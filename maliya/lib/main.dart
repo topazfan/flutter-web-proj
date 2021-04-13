@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maliya/routes/route_names.dart';
 import 'package:maliya/routes/routes.dart';
-import 'package:maliya/views/home/home_page.dart';
 import 'package:maliya/views/templates/layout_template.dart';
 import 'package:maliya/views/templates/navigator_service.dart';
 
@@ -10,7 +10,7 @@ import 'locator.dart';
 
 void main() {
   setupLocator();
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigatorService>().navigatorKey,
       onGenerateRoute: generateRoute,
       initialRoute: HomeRoutes,
-      // home: HomePage(),
     );
   }
 }
