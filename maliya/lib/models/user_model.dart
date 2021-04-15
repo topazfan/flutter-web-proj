@@ -4,6 +4,19 @@ class UserModel {
   String email;
 
   UserModel({this.id, this.name, this.email});
+
+  // UserModel copyWith({
+  //   int id,
+  //   String name,
+  //   String email,
+  // }) {
+  //   return UserModel(
+  //     id ?? this.id,
+  //     name ?? this.name,
+  //     email ?? this.email,
+  //   );
+  // }
+
   // factory MuaModel.fromJson(Map<String, dynamic> json) =>
   //     _$MuaModelFromJson(json);
   // Map<String, dynamic> toJson() => _$MuaModelToJson(this);

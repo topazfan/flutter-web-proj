@@ -15,18 +15,28 @@ class LoginForm extends ConsumerWidget {
     final currentUser = watch(userProvider);
 
     _login() {
-      userAuth.setCurrent(AuthStatus.Authenticating);
+      userAuth.setAuthStatus(AuthStatus.Authenticating);
       if (_loginFormKey.currentState.validate()) {
         _loginFormKey.currentState.save();
       }
       var result = login(_name, _password);
       result.then((value) => {
             print("login" + value.toString()),
-            currentUser.setCurrentUser(
-                {"id": 111, "name": "test", "email": "test@eamil.com"}),
+            if (value != null && value.statusCode == 200)
+              {
+                userAuth.setAuthStatus(AuthStatus.Authenticated),
+                print('set'),
+                currentUser.setCurrentUser(
+                    {"id": 111, "name": "test", "email": "test@eamil.com"}),
+                print('login1  ${userAuth.state}'),
+              }
+            else
+              {
+                print('unauth'),
+                userAuth.setAuthStatus(AuthStatus.Unauthenticated),
+              }
           });
-
-      userAuth.setCurrent(AuthStatus.Authenticated);
+      print('login  ${userAuth.state}');
     }
 
     return Form(

@@ -6,9 +6,10 @@ final userProvider = StateNotifierProvider<CurrentUser>((ref) {
 });
 
 class CurrentUser extends StateNotifier<UserModel> {
-  // UserModel _userModel;
+  UserModel _userModel;
 
-  CurrentUser(UserModel state) : super(state);
+  CurrentUser(UserModel _userModel)
+      : super(_userModel ?? new UserModel(id: -1, name: null, email: null));
 
   // UserModel get userModel => _userModel;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maliya/routes/route_names.dart';
+import 'package:maliya/widgets/navigation/navigation_Item_user.dart';
 import 'package:maliya/widgets/navigation/navigation_item.dart';
-import 'package:maliya/widgets/navigation/navigation_menu.dart';
 
 List<Widget> navBarItems = [
   NavigationItem(
@@ -17,6 +17,7 @@ List<Widget> navBarItems = [
   ),
   NavigationItem(
     title: 'Help',
+    navigationPath: AboutRoutes,
   ),
 ];
 
@@ -30,7 +31,7 @@ class NavigationBarTablet extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: Text('MALIYA',
                   style: TextStyle(
                       fontSize: 30,
@@ -48,15 +49,7 @@ class NavigationBarTablet extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      NavigationMenu(
-                        title: 'Sign In',
-                        navigationPath: LoginRoutes,
-                        isActive: false,
-                        onPressed: () {
-                          print("login in");
-                        },
-                      ),
-                      // _registerButton(),
+                      NavigationItemLogin(),
                     ],
                   ),
                 ],

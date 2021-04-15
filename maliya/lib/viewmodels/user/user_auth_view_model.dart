@@ -7,23 +7,14 @@ enum AuthStatus {
   Unauthenticated
 }
 
-final userAuthProvider = StateNotifierProvider<UserAuth>((ref) {
-  return UserAuth(AuthStatus.Uninitialized);
-});
+final userAuthProvider = StateNotifierProvider<UserAuth>(
+    (ref) => new UserAuth(AuthStatus.Uninitialized));
 
 class UserAuth extends StateNotifier<AuthStatus> {
-  // UserModel _userModel;
-  // AuthStatus _authStatus;
+  final AuthStatus _authStatus;
+  UserAuth(this._authStatus) : super(_authStatus ?? AuthStatus.Uninitialized);
 
-  UserAuth(AuthStatus state) : super(state);
+  setAuthStatus(AuthStatus status) => state = status;
 
-  // AuthStatus get authStatus => _authStatus;
-
-  setCurrent(AuthStatus authStatus) {
-    state = authStatus;
-  }
-
-  void clear() {
-    state = null;
-  }
+  void clear() => state = AuthStatus.Uninitialized;
 }

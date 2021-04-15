@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigatorService>().navigatorKey,
       onGenerateRoute: generateRoute,
       initialRoute: HomeRoutes,
+      onUnknownRoute: unknownRoute,
     );
   }
 }

@@ -1,10 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maliya/routes/route_names.dart';
+import 'package:maliya/viewmodels/user/user_auth_view_model.dart';
 import 'package:maliya/views/about/about_page.dart';
 import 'package:maliya/views/home/home_page.dart';
 import 'package:maliya/views/login/login_page.dart';
 import 'package:maliya/routes/string_extensions.dart';
+import 'package:maliya/views/unknown/unknown.dart';
+
+Route<dynamic> unknownRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case UnknownRoutes:
+    default:
+      return _getPageRoutes(UnknownPage(), settings);
+  }
+}
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   // 使用settings.arguments则无法将参数展示到路径地址上,除非做转换
@@ -27,11 +38,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   // 将参数写入地址栏进行解析
   var routingData = settings.name.getRoutingData;
   print(settings);
+
   switch (routingData.route) {
     // case SignupRoutes:
     //   return _getPageRoutes(SignupView(), settings);
     case LoginRoutes:
       return _getPageRoutes(LoginPage(), settings);
+    case RootRoutes:
     case HomeRoutes:
       return _getPageRoutes(HomePage(), settings);
     case AboutRoutes:
@@ -43,13 +56,38 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return _getPageRoutes(EpisodeDetail(id: id), settings);
     // case MuaRoutes:
     //   return _getPageRoutes(MuaView(), settings);
+    case UnknownRoutes:
     default:
-      return _getPageRoutes(HomePage(), settings);
+      return _getPageRoutes(UnknownPage(), settings);
   }
 }
 
 PageRoute _getPageRoutes(Widget child, RouteSettings settings) {
-  return FadeRoutes(child: child, routeName: settings.name);
+  return FadeRoutes(
+      child: Consumer(
+        child: child,
+        builder: (context, watch, child) {
+          // login auth control
+          AuthStatus userAuth = watch(userAuthProvider.state);
+          if (userAuth == AuthStatus.Authenticated) {
+            print(1);
+            return child;
+          } else if (userAuth == AuthStatus.Uninitialized) {
+            print(2);
+            return LoginPage();
+          } else if (userAuth == AuthStatus.Authenticating) {
+            print(3);
+            return Center(child: const CircularProgressIndicator());
+          } else if (userAuth == AuthStatus.Unauthenticated) {
+            print(4);
+            return Center(child: Text('User auth failed! Please login'));
+          } else {
+            print(5);
+            return Center(child: Text('Not Authenticated!'));
+          }
+        },
+      ),
+      routeName: settings.name);
 }
 
 class FadeRoutes extends PageRouteBuilder {

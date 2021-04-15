@@ -16,6 +16,7 @@ class NavigatorService {
       routeName =
           Uri(path: routeName, queryParameters: queryParameters).toString();
     }
+    print(routeName);
     return navigatorKey.currentState.pushNamed(routeName);
   }
 

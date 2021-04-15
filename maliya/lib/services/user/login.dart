@@ -21,3 +21,9 @@ Future<Response> queryUserById(int id) async {
       await httpClient.client().get('/user/id', queryParameters: {"id": id});
   return response;
 }
+
+Future<Response> logout() async {
+  final httpClient = locator<HttpClient>();
+  final response = await httpClient.client().delete('/auth/delete');
+  return response;
+}

@@ -2,68 +2,67 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maliya/routes/route_names.dart';
 import 'package:maliya/widgets/navigation/navigation_item.dart';
+import 'package:maliya/widgets/navigation/navigation_item_drawer.dart';
 import 'package:maliya/widgets/navigation/navigation_menu.dart';
+
+List routeItems = [
+  {
+    "title": 'Home',
+    "navigationPath": HomeRoutes,
+  },
+  {
+    "title": 'About',
+    "navigationPath": AboutRoutes,
+  },
+  {
+    "title": 'Help',
+  },
+];
 
 class NavigationBarDesktop extends StatefulWidget {
   @override
   _NavigationBarDesktopState createState() => _NavigationBarDesktopState();
 }
 
+// TODO
 class _NavigationBarDesktopState extends State<NavigationBarDesktop> {
-  // int _selectedIndex = 0;
-  List<bool> activeItems = [true, false, false, false];
+  // List<bool> _activeItems = [true, false, false, false];
 
-  setItemActive(int index) {
-    for (int i = 0; i < activeItems.length; i++) {
-      if (i == index)
-        activeItems[i] = true;
-      else
-        activeItems[i] = false;
-    }
-    print(activeItems);
-  }
+  // void _setItemActive(int index) {
+  //   for (int i = 0; i < _activeItems.length; i++) {
+  //     if (i == index)
+  //       _activeItems[i] = true;
+  //     else
+  //       _activeItems[i] = false;
+  //   }
+  //   print(_activeItems);
+  // }
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    // setState(() {
-    //   _selectedIndex = index;
-    // });
-    print(index);
-    setItemActive(index);
+    setState(() {
+      print('$index parent');
+      _selectedIndex = index;
+      // _setItemActive(index);
+    });
   }
 
-  List<Widget> navBarItems = [];
+  List<Widget> _navBarItems = [];
 
   @override
   void initState() {
+    for (int i = 0; i < routeItems.length; i++) {
+      var item = routeItems[i];
+      Widget widget = NavigationItemDrawer(
+        title: item['title'],
+        navigationPath: item['navigationPath'],
+        index: i,
+        selectedIndex: _selectedIndex,
+        onPressed: _onItemTapped,
+      );
+      _navBarItems.add(widget);
+    }
     super.initState();
-    //   navBarItems = [
-    //     NavigationItem(
-    //       title: 'Home',
-    //       navigationPath: HomeRoutes,
-    //       index: 0,
-    //       isActive: activeItems[0],
-    //       onPressed: _onItemTapped,
-    //     ),
-    //     NavigationItem(
-    //       title: 'About',
-    //       navigationPath: AboutRoutes,
-    //       index: 1,
-    //       isActive: activeItems[1],
-    //       onPressed: _onItemTapped,
-    //     ),
-    //     NavigationItem(
-    //       title: 'Contact US',
-    //       index: 2,
-    //       isActive: activeItems[2],
-    //       onPressed: setItemActive(2),
-    //     ),
-    //     NavigationItem(
-    //       title: 'Help',
-    //       index: 3,
-    //       isActive: activeItems[3],
-    //       onPressed: setItemActive(3),
-    //     ),
-    //   ];
   }
 
   @override
@@ -75,7 +74,7 @@ class _NavigationBarDesktopState extends State<NavigationBarDesktop> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: Text('MALIYA',
                   style: TextStyle(
                       fontSize: 30,
@@ -88,7 +87,7 @@ class _NavigationBarDesktopState extends State<NavigationBarDesktop> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: navBarItems,
+                    children: _navBarItems,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
