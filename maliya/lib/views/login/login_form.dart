@@ -1,42 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maliya/global/show_dialog.dart';
 import 'package:maliya/services/user/login.dart';
 import 'package:maliya/viewmodels/user/user_auth_view_model.dart';
+import 'package:maliya/viewmodels/user/user_login_view_model.dart';
 import 'package:maliya/viewmodels/user/user_view_model.dart';
+import 'package:tuple/tuple.dart';
 
 class LoginForm extends ConsumerWidget {
   @override
-  Widget build(Object context, watch) {
-    var _name = '';
-    var _password = '';
+  Widget build(BuildContext context, watch) {
+    String _name = '';
+    String _password = '';
     final _loginFormKey = GlobalKey<FormState>();
 
-    final userAuth = watch(userAuthProvider);
-    final currentUser = watch(userProvider);
+    final userAuth = watch(userAuthProvider.state);
+    // TODO why only get ''?
+    final userLogin = watch(userLoginProvider(Tuple2(_name, _password)));
+    final currentUser = context.read(userProvider);
 
     _login() {
-      userAuth.setAuthStatus(AuthStatus.Authenticating);
       if (_loginFormKey.currentState.validate()) {
         _loginFormKey.currentState.save();
       }
+      // userLogin.when(
+      //     data: (data) => {
+      //           if (data != null && data.statusCode == 200)
+      //             {
+      //               context
+      //                   .read(userAuthProvider)
+      //                   .setAuthStatus(AuthStatus.Authenticated),
+      //               print('set'),
+      //               currentUser.setCurrentUser(
+      //                   {"id": 111, "name": "test", "email": "test@eamil.com"}),
+      //               print('login1  ${userAuth}'),
+      //             },
+      //           print('login data  ${userAuth}'),
+      //         },
+      //     loading: () => {
+      //           context
+      //               .read(userAuthProvider)
+      //               .setAuthStatus(AuthStatus.Authenticating),
+      //           print('login loading  ${userAuth}'),
+      //         },
+      //     error: (data, error) => {
+      //           context
+      //               .read(userAuthProvider)
+      //               .setAuthStatus(AuthStatus.Unauthenticated),
+      //           print('login error  ${userAuth}'),
+      //           // print('login error : $data'),
+      //         });
+      context.read(userAuthProvider).setAuthStatus(AuthStatus.Authenticating);
       var result = login(_name, _password);
-      result.then((value) => {
-            print("login" + value.toString()),
-            if (value != null && value.statusCode == 200)
-              {
-                userAuth.setAuthStatus(AuthStatus.Authenticated),
-                print('set'),
-                currentUser.setCurrentUser(
-                    {"id": 111, "name": "test", "email": "test@eamil.com"}),
-                print('login1  ${userAuth.state}'),
-              }
-            else
-              {
-                print('unauth'),
-                userAuth.setAuthStatus(AuthStatus.Unauthenticated),
-              }
-          });
-      print('login  ${userAuth.state}');
+      result
+          .then((value) => {
+                print("login" + value.toString()),
+                if (value != null && value.statusCode == 200)
+                  {
+                    context
+                        .read(userAuthProvider)
+                        .setAuthStatus(AuthStatus.Authenticated),
+                    print('login sucess'),
+                    currentUser.setCurrentUser(
+                        {"id": 111, "name": "test", "email": "test@eamil.com"}),
+                  }
+              })
+          .catchError((error) => {
+                print('login error'),
+                context
+                    .read(userAuthProvider)
+                    .setAuthStatus(AuthStatus.Unauthenticated),
+                showAlertDialog(context, "Alert",
+                    "user name or password incorrect, Please try again!")
+              });
     }
 
     return Form(
@@ -102,7 +138,11 @@ class LoginForm extends ConsumerWidget {
               child: Container(
                 width: double.infinity,
                 height: 50,
-                child: Center(child: Text('Sign In')),
+                child: Center(
+                  child: userAuth != AuthStatus.Authenticating
+                      ? Text('Sign In')
+                      : CircularProgressIndicator(),
+                ),
               ),
               style: ElevatedButton.styleFrom(
                 primary: Colors.deepPurple,

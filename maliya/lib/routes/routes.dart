@@ -67,24 +67,33 @@ PageRoute _getPageRoutes(Widget child, RouteSettings settings) {
       child: Consumer(
         child: child,
         builder: (context, watch, child) {
+          // return child;
           // login auth control
-          AuthStatus userAuth = watch(userAuthProvider.state);
-          if (userAuth == AuthStatus.Authenticated) {
-            print(1);
+          final userAuth = watch(userAuthProvider);
+          print('routes : ${userAuth.state}');
+          if (userAuth.state == AuthStatus.Authenticated) {
             return child;
-          } else if (userAuth == AuthStatus.Uninitialized) {
-            print(2);
-            return LoginPage();
-          } else if (userAuth == AuthStatus.Authenticating) {
-            print(3);
-            return Center(child: const CircularProgressIndicator());
-          } else if (userAuth == AuthStatus.Unauthenticated) {
-            print(4);
-            return Center(child: Text('User auth failed! Please login'));
           } else {
-            print(5);
-            return Center(child: Text('Not Authenticated!'));
+            return LoginPage();
           }
+
+          // if (userAuth == AuthStatus.Authenticated) {
+          //   print(1);
+          //   return child;
+          // } else if (userAuth == AuthStatus.Uninitialized) {
+          //   print(2);
+          //   return LoginPage();
+          //   // } else if (userAuth == AuthStatus.Authenticating) {
+          //   //   print(3);
+          //   //   return Center(child: const CircularProgressIndicator());
+          // } else if (userAuth == AuthStatus.Unauthenticated) {
+          //   print(4);
+          //   return Center(child: Text('User auth failed! Please login'));
+          // } else {
+          //   print(5);
+          //   return LoginPage();
+          //   // return Center(child: Text('Not Authenticated!'));
+          // }
         },
       ),
       routeName: settings.name);

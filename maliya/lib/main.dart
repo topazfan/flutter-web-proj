@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Maliya',
       theme: ThemeData(
         primaryColor: Colors.yellow,
-        textTheme: GoogleFonts.secularOneTextTheme(),
+        textTheme: GoogleFonts.comingSoonTextTheme(),
       ),
       builder: (context, child) => LayoutTemplate(child: child),
       navigatorKey: locator<NavigatorService>().navigatorKey,

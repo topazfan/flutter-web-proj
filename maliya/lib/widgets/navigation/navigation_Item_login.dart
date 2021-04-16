@@ -43,7 +43,7 @@ import 'package:maliya/views/templates/navigator_service.dart';
 // }
 
 class NavigationItemLogin extends StatelessWidget {
-  void _logout(callback) {
+  void _logout(Function callback) {
     var result = logout();
     result.then((resp) => {
           print("logout" + resp.toString()),
@@ -85,7 +85,6 @@ class NavigationItemLogin extends StatelessWidget {
                     ),
                     child: Text(
                       'Sign In',
-                      // : currentUser.name + 'Logout',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black54),
                     ),
