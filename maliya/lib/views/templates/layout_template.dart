@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:maliya/viewmodels/user/user_auth_view_model.dart';
-import 'package:maliya/views/login/login_page.dart';
 import 'package:maliya/views/templates/body_template.dart';
 import 'package:maliya/widgets/navigation/navigation_bar.dart';
 import 'package:maliya/widgets/navigation/navigation_drawer.dart';
@@ -9,7 +6,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 class LayoutTemplate extends StatelessWidget {
   final Widget child;
-  const LayoutTemplate({Key key, @required this.child}) : super(key: key);
+  const LayoutTemplate({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

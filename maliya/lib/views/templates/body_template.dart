@@ -43,7 +43,7 @@ import 'package:maliya/views/templates/navigator_service.dart';
 class BodyTemplate extends StatelessWidget {
   final Widget child;
 
-  const BodyTemplate({Key key, this.child}) : super(key: key);
+  const BodyTemplate({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

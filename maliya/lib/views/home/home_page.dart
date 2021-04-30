@@ -6,8 +6,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
-      // tablet: HomeContentTablet(),
       desktop: HomeContentTablet(),
+      mobile: Container(),
     );
   }
 }

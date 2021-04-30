@@ -9,6 +9,10 @@ List<Widget> navBarItems = [
     navigationPath: HomeRoutes,
   ),
   NavigationItem(
+    title: 'Malis',
+    navigationPath: MalisRoutes,
+  ),
+  NavigationItem(
     title: 'About',
     navigationPath: AboutRoutes,
   ),

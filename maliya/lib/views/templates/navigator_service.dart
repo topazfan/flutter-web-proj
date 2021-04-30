@@ -4,7 +4,7 @@ class NavigatorService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<dynamic> navigatorTo(String routeName,
-      {Map<String, String> queryParameters}) {
+      {Map<String, String>? queryParameters}) {
     // Future<dynamic> navigatorTo(String routeName, {Object queryParameters}) {
     // if (null != queryParameters) {
     //   routeName =
@@ -17,10 +17,10 @@ class NavigatorService {
           Uri(path: routeName, queryParameters: queryParameters).toString();
     }
     print(routeName);
-    return navigatorKey.currentState.pushNamed(routeName);
+    return navigatorKey.currentState!.pushNamed(routeName);
   }
 
   void goBack() {
-    navigatorKey.currentState.pop();
+    navigatorKey.currentState!.pop();
   }
 }

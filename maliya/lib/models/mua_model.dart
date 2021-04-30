@@ -3,11 +3,11 @@
 
 // @JsonSerializable()
 class MuaModel {
-  int albumId;
-  int id;
-  String title;
-  String url;
-  String thumbnailUrl;
+  int? albumId;
+  int? id;
+  String? title;
+  String? url;
+  String? thumbnailUrl;
 
   MuaModel({this.albumId, this.id, this.title, this.url, this.thumbnailUrl});
   // factory MuaModel.fromJson(Map<String, dynamic> json) =>

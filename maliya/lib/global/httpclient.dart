@@ -11,7 +11,7 @@ class HttpClient {
     DioForBrowser dio;
     // Set default configs
     BaseOptions options = new BaseOptions(
-      baseUrl: 'http://localhost:8042',
+      baseUrl: 'http://localhost:8000',
       connectTimeout: 10000,
       receiveTimeout: 5000,
       headers: {

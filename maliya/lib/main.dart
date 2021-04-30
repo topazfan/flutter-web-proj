@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.yellow,
         textTheme: GoogleFonts.comingSoonTextTheme(),
       ),
-      builder: (context, child) => LayoutTemplate(child: child),
+      builder: (context, child) => LayoutTemplate(child: child!),
       navigatorKey: locator<NavigatorService>().navigatorKey,
       onGenerateRoute: generateRoute,
       initialRoute: HomeRoutes,

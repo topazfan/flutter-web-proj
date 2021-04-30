@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maliya/global/session_manager.dart';
 import 'package:maliya/locator.dart';
+import 'package:maliya/models/user_model.dart';
 import 'package:maliya/routes/route_names.dart';
 import 'package:maliya/services/user/login.dart';
 import 'package:maliya/viewmodels/user/user_auth_view_model.dart';
@@ -53,6 +55,7 @@ class NavigationItemLogin extends StatelessWidget {
               callback(),
             }
         });
+    locator<SessionManager>().remove('login_status');
   }
 
   @override
@@ -61,10 +64,15 @@ class NavigationItemLogin extends StatelessWidget {
       child: Consumer(
         builder: (context, watch, child) {
           // if here use watch(userAuthProvider), when the state changed, This will not change again. because it's not watch the state change.
-          final userAuth = watch(userAuthProvider.state);
-          final currentUser = watch(userProvider.state);
+          // final userAuth = watch(userAuthProvider.state);
+          // final currentUser = watch(userProvider.state);
 
-          return userAuth != AuthStatus.Authenticated
+          final userAuth = watch(userAuthProvider.notifier);
+          final currentUser = watch(userProvider.notifier);
+          AuthStatus authStatus = watch(userAuthProvider);
+          UserModel currentUserModel = watch(userProvider);
+
+          return authStatus != AuthStatus.Authenticated
               ? GestureDetector(
                   onTap: () => {
                     print(userAuth),
@@ -95,15 +103,14 @@ class NavigationItemLogin extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        currentUser == null ? 'Hi' : '${currentUser?.name}',
+                        currentUser == null ? 'Hi' : '${currentUserModel.name}',
                         style: TextStyle(fontSize: 25),
                       ),
                       SizedBox(width: 30),
                       GestureDetector(
                         onTap: () => {
-                          _logout(context
-                              .read(userAuthProvider)
-                              .setAuthStatus(AuthStatus.Uninitialized)),
+                          _logout(
+                              userAuth.setAuthStatus(AuthStatus.Uninitialized)),
                           print('logout unauth'),
                         },
                         child: Container(

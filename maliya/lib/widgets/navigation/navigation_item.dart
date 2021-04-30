@@ -4,9 +4,9 @@ import 'package:maliya/views/templates/navigator_service.dart';
 
 class NavigationItem extends StatefulWidget {
   final String title;
-  final String navigationPath;
+  final String? navigationPath;
   const NavigationItem({
-    this.title,
+    required this.title,
     this.navigationPath,
   });
 
@@ -35,7 +35,7 @@ class _NavigationItemState extends State<NavigationItem> {
         child: InkWell(
           splashColor: Colors.white60,
           onTap: () {
-            locator<NavigatorService>().navigatorTo(widget.navigationPath);
+            locator<NavigatorService>().navigatorTo(widget.navigationPath!);
             // widget.onPressed(widget.index);
           },
           child: Container(

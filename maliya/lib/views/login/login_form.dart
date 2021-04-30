@@ -1,27 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:maliya/global/show_dialog.dart';
+import 'package:maliya/global/session_manager.dart';
+import 'package:maliya/locator.dart';
+import 'package:maliya/models/user_model.dart';
+import 'package:maliya/routes/route_names.dart';
 import 'package:maliya/services/user/login.dart';
 import 'package:maliya/viewmodels/user/user_auth_view_model.dart';
 import 'package:maliya/viewmodels/user/user_login_view_model.dart';
 import 'package:maliya/viewmodels/user/user_view_model.dart';
+import 'package:maliya/views/templates/navigator_service.dart';
+import 'package:maliya/widgets/dialog/show_dialog.dart';
 import 'package:tuple/tuple.dart';
 
 class LoginForm extends ConsumerWidget {
+  // Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context, watch) {
     String _name = '';
     String _password = '';
     final _loginFormKey = GlobalKey<FormState>();
 
-    final userAuth = watch(userAuthProvider.state);
+    // final userAuth = watch(userAuthProvider.state);
+    // final currentUser = context.read(userProvider);
+
+    final userAuth = watch(userAuthProvider.notifier);
+    final currentUser = watch(userProvider.notifier);
+    AuthStatus authStatus = watch(userAuthProvider);
+    UserModel currentUserModel = watch(userProvider);
+
     // TODO why only get ''?
     final userLogin = watch(userLoginProvider(Tuple2(_name, _password)));
-    final currentUser = context.read(userProvider);
 
     _login() {
-      if (_loginFormKey.currentState.validate()) {
-        _loginFormKey.currentState.save();
+      if (_loginFormKey.currentState!.validate()) {
+        _loginFormKey.currentState!.save();
       }
       // userLogin.when(
       //     data: (data) => {
@@ -50,26 +65,27 @@ class LoginForm extends ConsumerWidget {
       //           print('login error  ${userAuth}'),
       //           // print('login error : $data'),
       //         });
-      context.read(userAuthProvider).setAuthStatus(AuthStatus.Authenticating);
+      // context.read(userAuthProvider).setAuthStatus(AuthStatus.Authenticating);
+      userAuth.setAuthStatus(AuthStatus.Authenticating);
+
       var result = login(_name, _password);
       result
           .then((value) => {
                 print("login" + value.toString()),
                 if (value != null && value.statusCode == 200)
                   {
-                    context
-                        .read(userAuthProvider)
-                        .setAuthStatus(AuthStatus.Authenticated),
+                    userAuth.setAuthStatus(AuthStatus.Authenticated),
                     print('login sucess'),
                     currentUser.setCurrentUser(
                         {"id": 111, "name": "test", "email": "test@eamil.com"}),
+                    locator<SessionManager>()
+                        .save('login_status', jsonEncode(value.data)),
+                    locator<NavigatorService>().navigatorTo(HomeRoutes),
                   }
               })
           .catchError((error) => {
                 print('login error'),
-                context
-                    .read(userAuthProvider)
-                    .setAuthStatus(AuthStatus.Unauthenticated),
+                userAuth.setAuthStatus(AuthStatus.Unauthenticated),
                 showAlertDialog(context, "Alert",
                     "user name or password incorrect, Please try again!")
               });
@@ -88,7 +104,7 @@ class LoginForm extends ConsumerWidget {
               contentPadding: EdgeInsets.only(left: 30),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blueGrey[100]),
+                borderSide: BorderSide(color: Colors.blueGrey[100]!),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -111,7 +127,7 @@ class LoginForm extends ConsumerWidget {
               contentPadding: EdgeInsets.only(left: 30),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blueGrey[100]),
+                borderSide: BorderSide(color: Colors.blueGrey[100]!),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -129,7 +145,7 @@ class LoginForm extends ConsumerWidget {
                 BoxShadow(
                   blurRadius: 12,
                   spreadRadius: 10,
-                  color: Colors.grey[100],
+                  color: Colors.grey[100]!,
                 ),
               ],
             ),
@@ -139,7 +155,7 @@ class LoginForm extends ConsumerWidget {
                 width: double.infinity,
                 height: 50,
                 child: Center(
-                  child: userAuth != AuthStatus.Authenticating
+                  child: authStatus != AuthStatus.Authenticating
                       ? Text('Sign In')
                       : CircularProgressIndicator(),
                 ),

@@ -9,7 +9,7 @@ Future<Response> login(String name, String password) async {
   return response;
 }
 
-Future<Response> sign(String param) async {
+Future<Response> sign(String? param) async {
   final httpClient = locator<HttpClient>();
   final response = await httpClient.client().get('/attribute/list');
   return response;

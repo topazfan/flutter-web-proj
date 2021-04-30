@@ -7,12 +7,12 @@ class NavigationItemDrawer extends StatefulWidget {
   final String navigationPath;
   final int index;
   final int selectedIndex;
-  final ValueChanged<int> onPressed;
+  final ValueChanged<int>? onPressed;
   const NavigationItemDrawer({
-    this.title,
-    this.navigationPath,
-    this.index,
-    this.selectedIndex,
+    required this.title,
+    required this.navigationPath,
+    required this.index,
+    required this.selectedIndex,
     this.onPressed,
   });
   @override
@@ -55,7 +55,7 @@ class _NavigationItemDrawerState extends State<NavigationItemDrawer> {
           splashColor: Colors.white60,
           onTap: () {
             print('${widget.index} ${widget.selectedIndex} ${isActive} child');
-            widget.onPressed(widget.index);
+            widget.onPressed!(widget.index);
             _onTapActive();
 
             locator<NavigatorService>().navigatorTo(widget.navigationPath);

@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final clockProvider = StateNotifierProvider<Clock>((ref) {
+final clockProvider = StateNotifierProvider<Clock, DateTime>((ref) {
   return Clock();
 });
 
@@ -15,12 +16,12 @@ class Clock extends StateNotifier<DateTime> {
     });
   }
 
-  Timer _timer;
+  Timer? _timer;
 
   // 4. cancel the timer when finished
   @override
   void dispose() {
-    _timer?.cancel();
+    _timer!.cancel();
     super.dispose();
   }
 }

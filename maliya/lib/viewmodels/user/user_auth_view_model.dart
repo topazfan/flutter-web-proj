@@ -8,7 +8,7 @@ enum AuthStatus {
 }
 
 final userAuthProvider =
-    StateNotifierProvider<UserAuth>((ref) => new UserAuth());
+    StateNotifierProvider<UserAuth, AuthStatus>((ref) => new UserAuth());
 
 class UserAuth extends StateNotifier<AuthStatus> {
   // final AuthStatus _authStatus;
